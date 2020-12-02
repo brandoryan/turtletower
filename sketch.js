@@ -77,7 +77,7 @@ function setup() {
 }
 
 function draw() {
-    background(50);
+    background(bg);
     bunny_warrior.show();
     bunny_warrior.animate();
     
