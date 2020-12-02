@@ -139,10 +139,10 @@ function handleKeys() {
     // Right
     else if(keyIsDown(RIGHT_ARROW)) { 
         bunny_warrior.applyForce(5, 0);
-        var newJSON = loadJSON('assets/sprites/bunny_warrior/attacking.json');
-        var newIMG = loadImage('assets/sprites/bunny_warrior/attacking.png');
-        console.log(newJSON);
-        bunny_warrior = new Bunny_Warrior(getAnimationVector(newJSON.frames, newIMG), width / 2 - 30, height - 90, false, 0.25);
+        //var newJSON = loadJSON('assets/sprites/bunny_warrior/attacking.json');
+        //var newIMG = loadImage('assets/sprites/bunny_warrior/attacking.png');
+        //console.log(newJSON);
+        //bunny_warrior = new Bunny_Warrior(getAnimationVector(newJSON.frames, newIMG), width / 2 - 30, height - 90, false, 0.25);
         //bunny_warrior.changeState('bunny_warrior', 'jumping');
     }
     // Jump
