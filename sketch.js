@@ -32,10 +32,10 @@ function preload() {
 
     bunny_data = loadJSON('assets/sprites/bunny_warrior/jumping.json');
     bunny_sheet = loadImage('assets/sprites/bunny_warrior/jumping.png');
-    turtle_minion_data = loadJSON('assets/sprites/turtle_minion/attacking.json');
-    turtle_minion_sheet = loadImage('assets/sprites/turtle_minion/attacking.png');
-    turtle_gatekeeper_data = loadJSON('assets/sprites/turtle_gatekeeper/dying.json');
-    turtle_gatekeeper_sheet = loadImage('assets/sprites/turtle_gatekeeper/dying.png');
+    turtle_minion_data = loadJSON('assets/sprites/turtle_minion/resting.json');
+    turtle_minion_sheet = loadImage('assets/sprites/turtle_minion/resting.png');
+    turtle_gatekeeper_data = loadJSON('assets/sprites/turtle_gatekeeper/resting.json');
+    turtle_gatekeeper_sheet = loadImage('assets/sprites/turtle_gatekeeper/resting.png');
     turtle_king_data = loadJSON('assets/sprites/turtle_king/resting.json');
     turtle_king_sheet = loadImage('assets/sprites/turtle_king/resting.png');
     snowball_data = loadJSON('assets/sprites/snowball/flying.json');
