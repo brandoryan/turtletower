@@ -55,6 +55,7 @@ function getAnimationVector(frames, sheet) {
 
 
 function setup() {
+    bg = loadImage('assets/background/background.jpg');
     createCanvas(500, 700);
     bunny_warrior = new Bunny_Warrior(getAnimationVector(bunny_data.frames, bunny_sheet), width / 2 - 30, height - 90, false, 0.25);
     /*
@@ -76,7 +77,7 @@ function setup() {
 }
 
 function draw() {
-    background(0);
+    background(bg);
     bunny_warrior.show();
     bunny_warrior.animate();
     
