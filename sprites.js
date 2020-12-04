@@ -44,20 +44,23 @@ class Sprite {
         console.log(data.length);
         this.animation = getAnimationVector(data.frames, sheet);
     }
-}
 
-class Bunny_Warrior extends Sprite {
-    
-    jump() {
-        this.vel.mult(0);
-        this.applyForce(0, -10);
+    hide() {
+        this.x = -200;
+        this.y = -200;
     }
 
     applyForce(x, y) {
         this.x += x;
         this.y += y;
     }
+}
 
+class Bunny_Warrior extends Sprite {
+    jump() {
+        this.vel.mult(0);
+        this.applyForce(0, -10);
+    }
 }
 
 class Turtle_King extends Sprite {
@@ -73,5 +76,16 @@ class Turtle_Minion extends Sprite {
 }
 
 class Snowball extends Sprite {
-
+    flyspeed = 5;
+    thrown = false;
+    fly(targX, targY) {
+        let diffX = targX - this.x;
+        let diffY = targY - this.y;
+        let stepX = diffX / this.flyspeed;
+        let stepY = diffY / this.flyspeed;
+        while(abs(this.x - targX) > 5 && abs(this.y - targY) > 5) {
+            this.applyForce(stepX, stepY)
+        }
+        this.thrown = false;
+    }
 }
