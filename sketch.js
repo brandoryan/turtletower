@@ -13,27 +13,34 @@ let score = 0;
 
 var GRAVITY = 2;
 var platforms = [];
-//let animation_data = [];
+let animation_data = [];
+let sheet_data = [];
 
 function preload() {
-    /*
+    
     var filepath = 'assets/sprites/';
-    var sprites = ['bunny_warrior', 'turtle_gatekeeper', 'turtle_king', 'turtle_minion'];
+    var sprites = ['bunny_warrior', 'turtle_minion', 'turtle_gatekeeper', 'turtle_king'];
     var states = ['resting', 'dying'];
 
     for (sprite in sprites) {
         for (state in states) {
             animation_data.push(loadJSON(filepath+sprites[sprite]+'/'+states[state]+'.json'));
-            animation_data.push(loadImage(filepath+sprites[sprite]+'/'+states[state]+'.png'));
+            print(filepath+sprites[sprite]+'/'+states[state]+'.json');
+            sheet_data.push(loadImage(filepath+sprites[sprite]+'/'+states[state]+'.png'));
+            print((filepath+sprites[sprite]+'/'+states[state]+'.png'));
         }
     }
-    console.log(animation_data.length);
-    // Loading Bunny Warrior States
-    //bunny_warrior.animation_data = loadJSON(filepath+'bunny_warrior/resting.json');
-    */
+    
+    animation_data.push(loadJSON('assets/sprites/snowball/flying.json'));
+    sheet_data.push(loadImage('assets/sprites/snowball/flying.png'));
+    animation_data.push(loadJSON('assets/sprites/snowball/impact.json'));
+    sheet_data.push(loadImage('assets/sprites/snowball/impact.png'));
 
+    /*
     bunny_data = loadJSON('assets/sprites/bunny_warrior/jumping.json');
     bunny_sheet = loadImage('assets/sprites/bunny_warrior/jumping.png');
+    bunny_data1 = loadJSON('assets/sprites/bunny_warrior/dying.json');
+    bunny_sheet1 = loadImage('assets/sprites/bunny_warrior/dying.png');
     turtle_minion_data = loadJSON('assets/sprites/turtle_minion/resting.json');
     turtle_minion_sheet = loadImage('assets/sprites/turtle_minion/resting.png');
     turtle_gatekeeper_data = loadJSON('assets/sprites/turtle_gatekeeper/resting.json');
@@ -42,7 +49,7 @@ function preload() {
     turtle_king_sheet = loadImage('assets/sprites/turtle_king/resting.png');
     snowball_data = loadJSON('assets/sprites/snowball/flying.json');
     snowball_sheet = loadImage('assets/sprites/snowball/flying.png');
-    
+    */
 }
 
 function getAnimationVector(frames, sheet) {
@@ -64,14 +71,19 @@ function setup() {
     createCanvas(500, 700);
 
     // Creating Sprites
-    bunny_warrior = new Bunny_Warrior(getAnimationVector(bunny_data.frames, bunny_sheet), width / 2 - 30, height - 90, false, 0.25);
-    snowball = new Snowball(getAnimationVector(snowball_data.frames, snowball_sheet), -200, -200, true, 0.6);
-    turtle_minion = new Turtle_Minion(getAnimationVector(turtle_minion_data.frames, turtle_minion_sheet), -200, -200, true, 0.1);
-    turtle_gatekeeper = new Turtle_Gatekeeper(getAnimationVector(turtle_gatekeeper_data.frames, turtle_gatekeeper_sheet), -200, -200, true, 0.1);
-    turtle_king = new Turtle_King(getAnimationVector(turtle_king_data.frames, turtle_king_sheet), -200, -200, true, 0.1);
+    bunny_warrior = new Bunny_Warrior(getAnimationVector(animation_data[0].frames, sheet_data[0]), width / 2 - 30, height - 90, false, 0.25);
+    //turtle_minion = new Turtle_Minion(getAnimationVector(turtle_minion_data.frames, turtle_minion_sheet), -200, -200, true, 0.1);
+    turtle_minion = new Turtle_Minion(getAnimationVector(animation_data[2].frames, sheet_data[2]), width/4, height/4-40, true, 0.1);
+    turtle_gatekeeper = new Turtle_Gatekeeper(getAnimationVector(animation_data[4].frames, sheet_data[4]), width/4+200, height/4-30, true, 0.1);
+    turtle_king = new Turtle_King(getAnimationVector(animation_data[6].frames, sheet_data[6]), width/4+120, height/4-120, true, 0.1);
+    snowball = new Snowball(getAnimationVector(animation_data[8].frames, sheet_data[8]), -200, -200, true, 0.6);
 
     // Initial Platform 
     platforms.push(new Platform(bunny_warrior.x, bunny_warrior.y + 80, 65, color("#FF80F0")));
+    platforms.push(new Platform(width/4, height/4, 65, color("#a1c4e4")));
+    platforms.push(new Platform(width/4+200, height/4+83, 120, color("#000080")));
+    platforms.push(new Platform(width/4+120, height/4-45, 65, color("#90ee90")));
+
     for(var y = 0; y < height; y += 50) {
         for(var i = 0; i < 3; i++) {
             var x = noise(i, y) * width;
@@ -125,6 +137,7 @@ function draw() {
 
     // Creating Scoreboard
     stroke(2);
+    textAlign(LEFT);
     strokeWeight(3);
     textSize(15);
     fill("#509fff");
@@ -169,11 +182,8 @@ function handleKeys() {
     // Right
     else if(keyIsDown(RIGHT_ARROW)) { 
         bunny_warrior.applyForce(5, 0);
-        var newJSON = loadJSON('assets/sprites/bunny_warrior/attacking.json');
-        var newIMG = loadImage('assets/sprites/bunny_warrior/attacking.png');
-        console.log(newJSON);
-        //bunny_warrior = new Bunny_Warrior(getAnimationVector(newJSON.frames, newIMG), width / 2 - 30, height - 90, false, 0.25);
-        bunny_warrior.changeState('bunny_warrior', 'jumping');
+        turtle_gatekeeper.changeState(animation_data[3].frames, sheet_data[3]);
+        turtle_gatekeeper.speed = .05;
     }
     // Jump
     if(keyIsDown(32)) {

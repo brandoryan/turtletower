@@ -38,11 +38,8 @@ class Sprite {
         }
     }
 
-    changeState(sprite, state) {
-        data = loadJSON('assets/sprites/'+sprite+'/'+state+'.json');
-        sheet = loadImage('assets/sprites/'+sprite+'/'+state+'.png');
-        console.log(data.length);
-        this.animation = getAnimationVector(data.frames, sheet);
+    changeState(data, sheet) {
+        this.animation = getAnimationVector(data, sheet);
     }
 
     hide() {
