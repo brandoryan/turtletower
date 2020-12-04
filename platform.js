@@ -10,8 +10,8 @@ function Platform(x, y, width, color) {
 
 Platform.prototype.draw = function(altitude) {
 
-    stroke(255);
-    strokeWeight(3);
+    stroke(0);
+    strokeWeight(2);
     fill(this.color);
     rect(this.x, this.y, this.width, 15);
     /*if(altitude - this.altitude < height / 2) {

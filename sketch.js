@@ -35,7 +35,7 @@ function preload() {
     sheet_data.push(loadImage('assets/sprites/snowball/flying.png'));
     animation_data.push(loadJSON('assets/sprites/snowball/impact.json'));
     sheet_data.push(loadImage('assets/sprites/snowball/impact.png'));
-
+    print(animation_data.length);
     /*
     bunny_data = loadJSON('assets/sprites/bunny_warrior/jumping.json');
     bunny_sheet = loadImage('assets/sprites/bunny_warrior/jumping.png');
@@ -88,7 +88,7 @@ function setup() {
         for(var i = 0; i < 3; i++) {
             var x = noise(i, y) * width;
             if(noise(y, i) > 0.5) {
-                platforms.push(new Platform(x, y, 55, color("#FF8000")));
+                platforms.push(new Platform(x, y, 55, color("#f0ead6")));
             }
         }
     }
@@ -182,8 +182,8 @@ function handleKeys() {
     // Right
     else if(keyIsDown(RIGHT_ARROW)) { 
         bunny_warrior.applyForce(5, 0);
-        turtle_gatekeeper.changeState(animation_data[3].frames, sheet_data[3]);
-        turtle_gatekeeper.speed = .05;
+        //turtle_gatekeeper.changeState(animation_data[3].frames, sheet_data[3]);
+        //turtle_gatekeeper.speed = .05;
     }
     // Jump
     if(keyIsDown(32)) {
@@ -193,7 +193,7 @@ function handleKeys() {
 }
 
 function mouseClicked() {
-    snowball = new Snowball(getAnimationVector(snowball_data.frames, snowball_sheet), bunny_warrior.x+10, bunny_warrior.y+20, true, 0.6);
+    snowball = new Snowball(getAnimationVector(animation_data[9].frames, sheet_data[9]), bunny_warrior.x+10, bunny_warrior.y+20, true, 0.6);
     snowball.show();
     snowball.animate();
     snowball.thrown = true;
