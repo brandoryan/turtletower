@@ -27,9 +27,6 @@ class Sprite {
     show() {
         let index = floor(this.index) % this.length;
         image(this.animation[index], this.x, this.y);
-        if(floor(this.index) % this.length == 0) {
-            this.animationCounter++;
-        }
     }
 
     animate() {
@@ -49,6 +46,7 @@ class Sprite {
     hide() {
         this.x = width;
         this.y = height;
+        this.onScreen = false;
     }
 
     changeState(data, sheet) {
@@ -68,24 +66,51 @@ class Bunny_Warrior extends Sprite {
     }
 }
 
-class Turtle_King extends Sprite {
-
-}
-
-class Turtle_Gatekeeper extends Sprite {
-
-}
-
 class Turtle_Minion extends Sprite {
     death() {
         this.speed = 0.03;
         this.index = 0;
         this.animationCounter = 0;
         this.changeState(animation_data[3].frames, sheet_data[3]);
-        print(this.animationCounter);
-        if(this.animationCounter == 1) {
+        if(this.onScreen == true) {
+            score += 10;
+            shells += 1;
+            for(var i = 0; i < this.length; i++) {
+                this.show();
+            }
             this.hide();
         }
+        this.onScreen = false;
+    }
+}
+
+class Turtle_Gatekeeper extends Sprite {
+    death() {
+        this.speed = 0.05;
+        this.index = 0;
+        this.animationCounter = 0;
+        this.changeState(animation_data[5].frames, sheet_data[5]);
+        if(this.onScreen == true) {
+            score += 25;
+            shells += 1;
+            //this.hide();
+        }
+        this.onScreen = false;
+    }
+}
+
+class Turtle_King extends Sprite {
+    death() {
+        this.speed = 0.05;
+        this.index = 0;
+        this.animationCounter = 0;
+        this.changeState(animation_data[7].frames, sheet_data[7]);
+        if(this.onScreen == true) {
+            score += 50;
+            shells += 1;
+            //this.hide();
+        }
+        this.onScreen = false;
     }
 }
 

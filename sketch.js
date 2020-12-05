@@ -5,6 +5,7 @@ var GRAVITY = 2;
 var platforms = [];
 let animation_data = [];
 let sheet_data = [];
+let snowball = [];
 let velocity = 0;
 
 function preload() {
@@ -25,7 +26,7 @@ function preload() {
     animation_data.push(loadJSON('assets/sprites/snowball/impact.json'));
     sheet_data.push(loadImage('assets/sprites/snowball/impact.png'));
 }
-
+    
 function getAnimationVector(frames, sheet) {
     let sprite_animation = [];
     for (let i = 0; i < frames.length; i++) {
@@ -49,7 +50,7 @@ function setup() {
     turtle_minion = new Turtle_Minion(getAnimationVector(animation_data[2].frames, sheet_data[2]), width/4, height/4-40, true, 0.1);
     turtle_gatekeeper = new Turtle_Gatekeeper(getAnimationVector(animation_data[4].frames, sheet_data[4]), width/4+200, height/4-30, true, 0.1);
     turtle_king = new Turtle_King(getAnimationVector(animation_data[6].frames, sheet_data[6]), width/4+120, height/4-120, true, 0.1);
-    snowball = new Snowball(getAnimationVector(animation_data[8].frames, sheet_data[8]), width, height, true, 0.6);
+    snowball.push(new Snowball(getAnimationVector(animation_data[8].frames, sheet_data[8]), width, height, true, 0.6));
 
     // Initial Platform 
     platforms.push(new Platform(bunny_warrior.x, bunny_warrior.y + 80, 65, color("#FF80F0")));
@@ -136,29 +137,31 @@ function handleBunny() {
 }
 
 function handleSnowball() {
-    snowball.show();
-    snowball.animate();
+    for(var i = 0; i < snowball.length; i++) {
+        snowball[i].show();
+        snowball[i].animate();
 
-    if(snowball.thrown == true && abs(snowball.x - snowball.target.x) > 5 || abs(snowball.y - snowball.target.y) > 5) {
-        snowball.applyForce((snowball.target.x - snowball.x) / snowball.flyspeed, (snowball.target.y - snowball.y) / snowball.flyspeed);
-    }
-    else {
-        snowball.thrown = false;
-        snowball.changeState(animation_data[9].frames, sheet_data[9]);
-        if(checkIfInHitbox(snowball, turtle_minion)) {
-            turtle_minion.death();
-            //turtle_minion.hide();
+        if(snowball[i].thrown == true && abs(snowball[i].x - snowball[i].target.x) > 5 || abs(snowball[i].y - snowball[i].target.y) > 5) {
+            snowball[i].applyForce((snowball[i].target.x - snowball[i].x) / snowball[i].flyspeed, (snowball[i].target.y - snowball[i].y) / snowball[i].flyspeed);
         }
-        else if(checkIfInHitbox(snowball, turtle_gatekeeper)) {
-            turtle_gatekeeper.changeState(animation_data[5].frames, sheet_data[5]);
-            //turtle_gatekeeper.hide();
-        }
-        else if(checkIfInHitbox(snowball, turtle_king)) {
-            turtle_king.changeState(animation_data[7].frames, sheet_data[7]);
-            //turtle_king.hide();
-        }
-        if(floor(snowball.index) % 40 == 0) {
-            snowball.reload();
+        else {
+            snowball[i].thrown = false;
+            snowball[i].changeState(animation_data[9].frames, sheet_data[9]);
+            if(checkIfInHitbox(snowball[i], turtle_minion)) {
+                turtle_minion.death();
+            }
+            else if(checkIfInHitbox(snowball[i], turtle_gatekeeper)) {
+                turtle_gatekeeper.death();
+                //turtle_gatekeeper.hide();
+            }
+            else if(checkIfInHitbox(snowball[i], turtle_king)) {
+                turtle_king.death();
+                //turtle_king.hide();
+            }
+            if(floor(snowball[i].index) % 40 == 0) {
+                snowball[i].reload();
+                snowball.splice(i, 1);
+            }
         }
     }
 }
@@ -215,14 +218,16 @@ function handleKeys() {
     // Jump
     if(keyIsDown(32)) {
         //if(bunny_warrior.onPlatform == true) {
-            bunny_warrior.applyForce(0, -10);
+        bunny_warrior.applyForce(0, -10);
         //}
         //bunny_warrior.onPlatform = false;
     }
 }
 
 function mouseClicked() {
-    snowball = new Snowball(getAnimationVector(animation_data[8].frames, sheet_data[8]), bunny_warrior.x+10, bunny_warrior.y+20, true, 0.6);
-    snowball.thrown = true;
-    snowball.target = createVector(mouseX, mouseY);
+    if(snowball.length < 2) {
+        snowball.push(new Snowball(getAnimationVector(animation_data[8].frames, sheet_data[8]), bunny_warrior.x+10, bunny_warrior.y+20, true, 0.6));
+        snowball[snowball.length-1].thrown = true;
+        snowball[snowball.length-1].target = createVector(mouseX, mouseY);
+    }
 }
