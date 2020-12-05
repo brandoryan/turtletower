@@ -24,7 +24,6 @@ Platform.prototype.draw = function(altitude) {
 };
 
 Platform.prototype.collidesWith = function(sprite) {
-
     var pT = this.y - 15; // Top of platform
     var dB = sprite.y + sprite.h/2 + 15;  // Bottom of bunny
 

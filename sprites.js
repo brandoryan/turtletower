@@ -12,6 +12,13 @@ class Sprite {
         this.length = this.animation.length;
         this.speed = speed;
         this.index = 0;
+
+        this.onScreen = true;
+        this.velocity = createVector(0, 0);
+        this.maxAltitude = y;
+        this.premaxAltitude = y;
+        this.force;
+        this.animationCounter = 0;
     }
 
     setX(x) { this.x = x; }
@@ -20,12 +27,13 @@ class Sprite {
     show() {
         let index = floor(this.index) % this.length;
         image(this.animation[index], this.x, this.y);
+        if(floor(this.index) % this.length == 0) {
+            this.animationCounter++;
+        }
     }
 
     animate() {
         this.index += this.speed;
-        // Movement in -x direction
-        //this.x -= this.speed * 5;
     
         if(this.y < -90) {
             this.y = height;
@@ -38,13 +46,13 @@ class Sprite {
         }
     }
 
-    changeState(data, sheet) {
-        this.animation = getAnimationVector(data, sheet);
+    hide() {
+        this.x = width;
+        this.y = height;
     }
 
-    hide() {
-        this.x = -200;
-        this.y = -200;
+    changeState(data, sheet) {
+        this.animation = getAnimationVector(data, sheet);
     }
 
     applyForce(x, y) {
@@ -55,8 +63,8 @@ class Sprite {
 
 class Bunny_Warrior extends Sprite {
     jump() {
-        this.vel.mult(0);
-        this.applyForce(0, -10);
+        this.velocity.y *= 0;
+        this.applyForce(0, this.force);
     }
 }
 
@@ -69,20 +77,25 @@ class Turtle_Gatekeeper extends Sprite {
 }
 
 class Turtle_Minion extends Sprite {
-
+    death() {
+        this.speed = 0.03;
+        this.index = 0;
+        this.animationCounter = 0;
+        this.changeState(animation_data[3].frames, sheet_data[3]);
+        print(this.animationCounter);
+        if(this.animationCounter == 1) {
+            this.hide();
+        }
+    }
 }
 
 class Snowball extends Sprite {
-    flyspeed = 5;
+    flyspeed = 20;
     thrown = false;
-    fly(targX, targY) {
-        let diffX = targX - this.x;
-        let diffY = targY - this.y;
-        let stepX = diffX / this.flyspeed;
-        let stepY = diffY / this.flyspeed;
-        while(abs(this.x - targX) > 5 && abs(this.y - targY) > 5) {
-            this.applyForce(stepX, stepY)
-        }
-        this.thrown = false;
+    target = createVector(width, height);
+    reload() {
+        this.x = width;
+        this.y = height;
+        this.target = createVector(width, height);
     }
 }
