@@ -53,14 +53,14 @@ function setup() {
     turtle_king = new Turtle_King(getAnimationVector(animation_data[6].frames, sheet_data[6]), width/4+120, height/4-120, true, 0.1);
     snowball.push(new Snowball(getAnimationVector(animation_data[8].frames, sheet_data[8]), width, height, true, 0.6));
 
-    // Initial Platform 
+    // Initialize Platforms
     platforms.push(new Platform(bunny_warrior.x, bunny_warrior.y + 80, 65, color("#FF80F0")));
     platforms.push(new Platform(width/4, height/4, 65, color("#a1c4e4")));
     platforms.push(new Platform(width/4+200, height/4+83, 120, color("#000080")));
     platforms.push(new Platform(width/4+120, height/4-45, 65, color("#90ee90")));
 
-    for(var y = 0; y < height-50; y += 50) {
-        for(var i = 0; i < 3; i++) {
+    for(var y = 0; y < height-60; y += 40) {
+        for(var i = 0; i < 5; i++) {
             var x = noise(i, y) * width;
             if(noise(y, i) > 0.5) {
                 platforms.push(new Platform(x, y, 55, color("#f0ead6")));
@@ -88,6 +88,7 @@ function draw() {
     handleSnowball();
     handleScore();
 
+    handlePlatforms();
     //var collided = false;
 
     for(var i = 0; i < platforms.length; i++) {
@@ -211,6 +212,10 @@ function handleScore() {
     rect(width-150, height-50, 150, 50, 20, 20, 5, 20);
     fill("#a1c4e4");
     text("Score = " + score, width-130, height -18);
+}
+
+function handlePlatforms() {
+    
 }
 
 function handleKeys() {
