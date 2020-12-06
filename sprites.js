@@ -75,10 +75,6 @@ class Turtle_Minion extends Sprite {
         if(this.onScreen == true) {
             score += 10;
             shells += 1;
-            for(var i = 0; i < this.length; i++) {
-                this.show();
-            }
-            this.hide();
         }
         this.onScreen = false;
     }

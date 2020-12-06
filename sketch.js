@@ -6,6 +6,7 @@ var platforms = [];
 let animation_data = [];
 let sheet_data = [];
 let snowball = [];
+let snowball_ammo = 1;
 let velocity = 0;
 
 function preload() {
@@ -58,7 +59,7 @@ function setup() {
     platforms.push(new Platform(width/4+200, height/4+83, 120, color("#000080")));
     platforms.push(new Platform(width/4+120, height/4-45, 65, color("#90ee90")));
 
-    for(var y = 0; y < height; y += 50) {
+    for(var y = 0; y < height-50; y += 50) {
         for(var i = 0; i < 3; i++) {
             var x = noise(i, y) * width;
             if(noise(y, i) > 0.5) {
@@ -83,7 +84,7 @@ function draw() {
         platforms[i].draw();
         
         if(platforms[i].collidesWith(bunny_warrior) && !collided) {
-            //bunny_warrior.applyForce(0, bunny_warrior.force*velocity);
+            //bunny_warrior.applyForce(0, -100);
             collided = true;
             velocity *= 0.8;
             //bunny_warrior.force*velocity;
@@ -133,7 +134,10 @@ function handleBunny() {
         endGame();
     }
 
-
+    if(checkIfInHitbox(bunny_warrior, turtle_minion) || checkIfInHitbox(bunny_warrior, turtle_gatekeeper) || checkIfInHitbox(bunny_warrior, turtle_king)) {
+        endGame();
+    }
+    
 }
 
 function handleSnowball() {
@@ -146,9 +150,9 @@ function handleSnowball() {
         }
         else {
             snowball[i].thrown = false;
-            snowball[i].changeState(animation_data[9].frames, sheet_data[9]);
             if(checkIfInHitbox(snowball[i], turtle_minion)) {
                 turtle_minion.death();
+
             }
             else if(checkIfInHitbox(snowball[i], turtle_gatekeeper)) {
                 turtle_gatekeeper.death();
@@ -158,6 +162,8 @@ function handleSnowball() {
                 turtle_king.death();
                 //turtle_king.hide();
             }
+            
+            snowball[i].changeState(animation_data[9].frames, sheet_data[9]);
             if(floor(snowball[i].index) % 40 == 0) {
                 snowball[i].reload();
                 snowball.splice(i, 1);
@@ -167,12 +173,12 @@ function handleSnowball() {
 }
 
 function checkIfInHitbox(sprite, enemy) {
-    if(sprite.x > enemy.x && sprite.x < enemy.x+enemy.w) {
-        if(sprite.y > enemy.y && sprite.y < enemy.y+enemy.h) {
-            return true;
-        }
-    }
-    return false;
+    let leeway_w = sprite.w/2;
+    let leeway_h = sprite.h/2;
+    return !(enemy.x > (sprite.x + sprite.w - leeway_w) || 
+            (enemy.x + enemy.w - leeway_w) <  sprite.x  || 
+             enemy.y > (sprite.y + sprite.h - leeway_h) ||
+            (enemy.y + enemy.h - leeway_h) <  sprite.y);
 }
 
 function handleScore() {
@@ -180,20 +186,20 @@ function handleScore() {
     stroke(2);
     textAlign(LEFT);
     strokeWeight(3);
-    textSize(15);
+    textSize(18);
     fill("#509fff");
     rect(0, height-50, 150, 50, 20, 20, 20, 5);
     fill("#ffffff");
-    text("Shells = "+ shells, 10, height -20);
+    text("Shells = "+ shells, 10, height -18);
     image(shellImage, 105, height- 42);
 
     stroke(2);
     strokeWeight(3);
-    textSize(15);
+    textSize(18);
     fill("#ffffff");
     rect(width-150, height-50, 150, 50, 20, 20, 5, 20);
     fill("#a1c4e4");
-    text("Score = " + score, width-130, height -20);
+    text("Score = " + score, width-130, height -18);
 }
 
 function handleKeys() {
@@ -225,7 +231,11 @@ function handleKeys() {
 }
 
 function mouseClicked() {
-    if(snowball.length < 2) {
+    // Gain the ability to fire more snowballs based on how many
+    // shells youve collected. Every 50 shells you gain 1 more
+    // snowball ammo.
+    snowball_ammo = shells / 50;
+    if(snowball.length < floor(snowball_ammo) + 1) {
         snowball.push(new Snowball(getAnimationVector(animation_data[8].frames, sheet_data[8]), bunny_warrior.x+10, bunny_warrior.y+20, true, 0.6));
         snowball[snowball.length-1].thrown = true;
         snowball[snowball.length-1].target = createVector(mouseX, mouseY);
