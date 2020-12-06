@@ -74,12 +74,14 @@ function draw() {
         background(bg);
     }
 
-    if(checkIfInHitbox(bunny_warrior, turtle_minion) || checkIfInHitbox(bunny_warrior, turtle_gatekeeper) || checkIfInHitbox(bunny_warrior, turtle_king)) {
+    if (checkIfInHitbox(bunny_warrior, turtle_minion) && turtle_minion.onScreen || 
+        checkIfInHitbox(bunny_warrior, turtle_gatekeeper) && turtle_gatekeeper.onScreen || 
+        checkIfInHitbox(bunny_warrior, turtle_king) && turtle_king.onScreen) {
         endGame();
     }
     if(bunny_warrior.y > height) {
         endGame();
-    }    
+    }
 
     handleEnemies();
     handleBunny();
@@ -125,12 +127,21 @@ function endGame() {
 function handleEnemies() {
     turtle_minion.show();
     turtle_minion.animate();
+    if(!turtle_minion.onScreen && floor(turtle_minion.index) >= turtle_minion.animation.length) {
+        turtle_minion = new Turtle_Minion(getAnimationVector(animation_data[2].frames, sheet_data[2]), width, height, true, 0.1);
+    }
 
     turtle_gatekeeper.show();
     turtle_gatekeeper.animate();
-    
+    if(!turtle_gatekeeper.onScreen && floor(turtle_gatekeeper.index) >= turtle_gatekeeper.animation.length) {
+        turtle_gatekeeper = new Turtle_Gatekeeper(getAnimationVector(animation_data[4].frames, sheet_data[4]), width, height, true, 0.1);
+    }
+
     turtle_king.show();
     turtle_king.animate();
+    if(!turtle_king.onScreen && floor(turtle_king.index) >= turtle_king.animation.length) {
+        turtle_king = new Turtle_King(getAnimationVector(animation_data[6].frames, sheet_data[6]), width, height, true, 0.1);
+    }
 }
 
 function handleBunny() {
@@ -140,7 +151,6 @@ function handleBunny() {
     if(bunny_warrior.dead == false) {
         bunny_warrior.applyForce(0, GRAVITY);
     }
-
 }
 
 function handleSnowball() {
@@ -155,7 +165,6 @@ function handleSnowball() {
             snowball[i].thrown = false;
             if(checkIfInHitbox(snowball[i], turtle_minion)) {
                 turtle_minion.death();
-
             }
             else if(checkIfInHitbox(snowball[i], turtle_gatekeeper)) {
                 turtle_gatekeeper.death();
