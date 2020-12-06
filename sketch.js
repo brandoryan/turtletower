@@ -70,22 +70,31 @@ function setup() {
 }
 
 function draw() {
-    background(bg);
+    if(bunny_warrior.dead == false) {
+        background(bg);
+    }
 
-    handleBunny();
+    if(checkIfInHitbox(bunny_warrior, turtle_minion) || checkIfInHitbox(bunny_warrior, turtle_gatekeeper) || checkIfInHitbox(bunny_warrior, turtle_king)) {
+        endGame();
+    }
+    if(bunny_warrior.y > height) {
+        endGame();
+    }    
+
     handleEnemies();
+    handleBunny();
     handleSnowball();
     handleScore();
 
-    var collided = false;
+    //var collided = false;
 
     for(var i = 0; i < platforms.length; i++) {
         
         platforms[i].draw();
         
-        if(platforms[i].collidesWith(bunny_warrior) && !collided) {
+        if(platforms[i].collidesWith(bunny_warrior)) {// && !collided) {
             //bunny_warrior.applyForce(0, -100);
-            collided = true;
+            //collided = true;
             velocity *= 0.8;
             //bunny_warrior.force*velocity;
             //bunny_warrior.jump();
@@ -110,7 +119,7 @@ function endGame() {
     noStroke();
     fill("70FFF0");
     text("Game Over!", width / 2, height / 2);
-    noLoop();
+    bunny_warrior.death();
 }
 
 function handleEnemies() {
@@ -128,16 +137,10 @@ function handleBunny() {
     bunny_warrior.show();
     bunny_warrior.animate();
 
-    bunny_warrior.applyForce(0, GRAVITY);
-
-    if(bunny_warrior.y > height) {
-        endGame();
+    if(bunny_warrior.dead == false) {
+        bunny_warrior.applyForce(0, GRAVITY);
     }
 
-    if(checkIfInHitbox(bunny_warrior, turtle_minion) || checkIfInHitbox(bunny_warrior, turtle_gatekeeper) || checkIfInHitbox(bunny_warrior, turtle_king)) {
-        endGame();
-    }
-    
 }
 
 function handleSnowball() {
@@ -203,30 +206,32 @@ function handleScore() {
 }
 
 function handleKeys() {
-    // Left
-    if(keyIsDown(65)) {
-        bunny_warrior.applyForce(-5, 0); 
-    }
-    // Right
-    else if(keyIsDown(68)) { 
-        bunny_warrior.applyForce(5, 0);
-    }
-    else if(keyIsDown(83)) { 
-        bunny_warrior.applyForce(0, 5);
-    }
-    else if(keyIsDown(LEFT_ARROW)) {
-        bunny_warrior.applyForce(-5, 0); 
-    }
-    // Right
-    else if(keyIsDown(RIGHT_ARROW)) { 
-        bunny_warrior.applyForce(5, 0);
-    }
-    // Jump
-    if(keyIsDown(32)) {
-        //if(bunny_warrior.onPlatform == true) {
-        bunny_warrior.applyForce(0, -10);
-        //}
-        //bunny_warrior.onPlatform = false;
+    if(bunny_warrior.dead == false) {
+        // Left
+        if(keyIsDown(65)) {
+            bunny_warrior.applyForce(-5, 0); 
+        }
+        // Right
+        else if(keyIsDown(68)) { 
+            bunny_warrior.applyForce(5, 0);
+        }
+        else if(keyIsDown(83)) { 
+            bunny_warrior.applyForce(0, 5);
+        }
+        else if(keyIsDown(LEFT_ARROW)) {
+            bunny_warrior.applyForce(-5, 0); 
+        }
+        // Right
+        else if(keyIsDown(RIGHT_ARROW)) { 
+            bunny_warrior.applyForce(5, 0);
+        }
+        // Jump
+        if(keyIsDown(32)) {
+            //if(bunny_warrior.onPlatform == true) {
+            bunny_warrior.applyForce(0, -10);
+            //}
+            //bunny_warrior.onPlatform = false;
+        }
     }
 }
 
@@ -234,10 +239,12 @@ function mouseClicked() {
     // Gain the ability to fire more snowballs based on how many
     // shells youve collected. Every 50 shells you gain 1 more
     // snowball ammo.
-    snowball_ammo = shells / 50;
-    if(snowball.length < floor(snowball_ammo) + 1) {
-        snowball.push(new Snowball(getAnimationVector(animation_data[8].frames, sheet_data[8]), bunny_warrior.x+10, bunny_warrior.y+20, true, 0.6));
-        snowball[snowball.length-1].thrown = true;
-        snowball[snowball.length-1].target = createVector(mouseX, mouseY);
+    if(bunny_warrior.dead == false) {
+        snowball_ammo = shells / 50;
+        if(snowball.length < floor(snowball_ammo) + 1) {
+            snowball.push(new Snowball(getAnimationVector(animation_data[8].frames, sheet_data[8]), bunny_warrior.x+10, bunny_warrior.y+20, true, 0.6));
+            snowball[snowball.length-1].thrown = true;
+            snowball[snowball.length-1].target = createVector(mouseX, mouseY);
+        }
     }
 }
