@@ -127,6 +127,7 @@ function endGame() {
 function handleEnemies() {
     turtle_minion.show();
     turtle_minion.animate();
+    // Play death animation one time before hiding the enemy sprite
     if(!turtle_minion.onScreen && floor(turtle_minion.index) >= turtle_minion.animation.length) {
         turtle_minion = new Turtle_Minion(getAnimationVector(animation_data[2].frames, sheet_data[2]), width, height, true, 0.1);
     }
@@ -168,11 +169,9 @@ function handleSnowball() {
             }
             else if(checkIfInHitbox(snowball[i], turtle_gatekeeper)) {
                 turtle_gatekeeper.death();
-                //turtle_gatekeeper.hide();
             }
             else if(checkIfInHitbox(snowball[i], turtle_king)) {
                 turtle_king.death();
-                //turtle_king.hide();
             }
             
             snowball[i].changeState(animation_data[9].frames, sheet_data[9]);

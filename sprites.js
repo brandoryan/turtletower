@@ -70,7 +70,6 @@ class Bunny_Warrior extends Sprite {
         if(this.dead == false) {
             this.index = 2;
         }
-        
         this.changeState(animation_data[1].frames, sheet_data[1]);
         this.dead = true;
     }
@@ -80,7 +79,6 @@ class Turtle_Minion extends Sprite {
     death() {
         this.speed = 0.03;
         this.index = 0;
-        this.animationCounter = 0;
         this.changeState(animation_data[3].frames, sheet_data[3]);
         if(this.onScreen == true) {
             score += 10;
@@ -94,12 +92,10 @@ class Turtle_Gatekeeper extends Sprite {
     death() {
         this.speed = 0.05;
         this.index = 0;
-        this.animationCounter = 0;
         this.changeState(animation_data[5].frames, sheet_data[5]);
         if(this.onScreen == true) {
             score += 25;
             shells += 1;
-            //this.hide();
         }
         this.onScreen = false;
     }
@@ -109,12 +105,10 @@ class Turtle_King extends Sprite {
     death() {
         this.speed = 0.05;
         this.index = 0;
-        this.animationCounter = 0;
         this.changeState(animation_data[7].frames, sheet_data[7]);
         if(this.onScreen == true) {
             score += 50;
             shells += 1;
-            //this.hide();
         }
         this.onScreen = false;
     }
