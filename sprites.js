@@ -12,6 +12,7 @@ class Sprite {
         this.length = this.animation.length;
         this.speed = speed;
         this.index = 0;
+        this.dead = false;
 
         this.onScreen = true;
         this.velocity = createVector(0, 0);
@@ -63,6 +64,15 @@ class Bunny_Warrior extends Sprite {
     jump() {
         this.velocity.y *= 0;
         this.applyForce(0, this.force);
+    }
+    death() {
+        this.speed = 0.05;
+        if(this.dead == false) {
+            this.index = 2;
+        }
+        
+        this.changeState(animation_data[1].frames, sheet_data[1]);
+        this.dead = true;
     }
 }
 
