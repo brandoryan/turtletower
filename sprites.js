@@ -62,8 +62,17 @@ class Sprite {
 
 class Bunny_Warrior extends Sprite {
     jump() {
-        this.velocity.y *= 0;
+        //this.velocity.y *= 0;
+
+        if (this.premaxAltitude == this.maxAltitude) {
+              // stronger hop as the altitude remains constant
+          this.force = constrain(this.force + 1, 12, 16);
+        } 
+        else {
+          this.force = 12;
+        }
         this.applyForce(0, this.force);
+        this.premaxAltitude = this.maxAltitude;
     }
     death() {
         this.speed = 0.05;

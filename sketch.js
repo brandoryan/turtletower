@@ -74,6 +74,34 @@ function setup() {
 }
 
 function draw() {
+    
+    // In the order that they're drawn overlapping
+    handleBackground();
+    handlePlatforms();
+    handleBunny();
+    handleEnemies();
+    handleSnowball();
+    handleScore();
+    
+    //var collided = false;
+
+    bunny_warrior.onPlatform = false;
+
+    handleKeys();
+}
+
+function endGame() {
+    textAlign(CENTER);
+    textSize(60);
+    strokeWeight(3);
+    fill("70FFF0");
+    text("Game Over!", width / 2, height / 2);
+    textSize(18);
+    text("Don't give up, Refresh to try again!", width / 2, height / 2 + 30);
+    bunny_warrior.death();
+}
+
+function handleBackground() {
     if(bunny_warrior.dead == false) {
         image(bg, 0, y1, width, height);
         image(bg, 0, y2, width, height);
@@ -91,31 +119,6 @@ function draw() {
     if (y2 >= height){
       y2 = -height;
     }
-    
-    handlePlatforms();
-    handleBunny();
-    handleEnemies();
-    handleSnowball();
-    handleScore();
-    
-    //var collided = false;
-
-
-    
-    bunny_warrior.onPlatform = false;
-
-    handleKeys();
-}
-
-function endGame() {
-    textAlign(CENTER);
-    textSize(60);
-    strokeWeight(3);
-    fill("70FFF0");
-    text("Game Over!", width / 2, height / 2);
-    textSize(18);
-    text("Don't give up, Refresh to try again!", width / 2, height / 2 + 30);
-    bunny_warrior.death();
 }
 
 function handleEnemies() {
@@ -140,15 +143,18 @@ function handleEnemies() {
 }
 
 function handleBunny() {
+    // If player is on a platform apply negative gravity 
     if(bunny_warrior.onPlatform == true) {
         bunny_warrior.applyForce(0, -GRAVITY);
     }
     
+    // If player has touched an enemy
     if (checkIfInHitbox(bunny_warrior, turtle_minion) && turtle_minion.onScreen || 
         checkIfInHitbox(bunny_warrior, turtle_gatekeeper) && turtle_gatekeeper.onScreen || 
         checkIfInHitbox(bunny_warrior, turtle_king) && turtle_king.onScreen) {
         endGame();
     }
+    // If player has fallen off the map
     if(bunny_warrior.y > height) {
         endGame();
     }
@@ -156,6 +162,7 @@ function handleBunny() {
     bunny_warrior.show();
     bunny_warrior.animate();
 
+    // If player dies then the sprite will remain in place
     if(bunny_warrior.dead == false) {
         bunny_warrior.applyForce(0, GRAVITY);
     }
@@ -225,10 +232,15 @@ function handlePlatforms() {
         
         platforms[i].draw();
         
-        if(platforms[i].collidesWith(bunny_warrior)) {// && !collided) {
-            //bunny_warrior.applyForce(0, -100);
+        if(platforms[i].collidesWith(bunny_warrior)) {// && !collided) {\
+            //bunny_warrior.jump();
+            //bunny_warrior.applyForce(0, -1);
+            /*for(var i = 0; i < platforms.length; i++) {
+                platforms[i].y+= 1;
+                platforms[i].draw();
+            }*/
             //collided = true;
-            velocity *= 0.8;
+            //velocity *= 0.8;
             //bunny_warrior.force*velocity;
             //bunny_warrior.jump();
 
