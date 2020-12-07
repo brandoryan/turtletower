@@ -39,6 +39,41 @@ function getAnimationVector(frames, sheet) {
     return sprite_animation;
 }
 
+/*
+var bgImg;
+var y1 = 0;
+var y2;
+
+var scrollSpeed = 2;
+
+function preload(){
+	bgImg = loadImage("bg.png");
+}
+
+function setup() { 
+  createCanvas(400, 400);
+  
+  y2 = height;
+} 
+
+function draw() { 
+  image(bgImg, 0, y1, width, height);
+  image(bgImg, 0, y2, width, height);
+  
+  y1 += scrollSpeed;
+  y2 += scrollSpeed;
+  
+  if (y1 > height){
+    y1 = -height;
+  }
+  if (y2 > height){
+    y2 = -height;
+  }
+  //print(x1, x2)
+  
+}
+*/
+
 function setup() {
     // Loading and Creating Backgrounds
     bg = loadImage('assets/background/background.jpg');
@@ -215,7 +250,7 @@ function handleScore() {
 }
 
 function handlePlatforms() {
-    
+
 }
 
 function handleKeys() {

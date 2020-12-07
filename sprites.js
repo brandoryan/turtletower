@@ -91,7 +91,7 @@ class Turtle_Minion extends Sprite {
 class Turtle_Gatekeeper extends Sprite {
     death() {
         this.speed = 0.05;
-        this.index = 0;
+        this.index = 7;
         this.changeState(animation_data[5].frames, sheet_data[5]);
         if(this.onScreen == true) {
             score += 25;
@@ -104,7 +104,7 @@ class Turtle_Gatekeeper extends Sprite {
 class Turtle_King extends Sprite {
     death() {
         this.speed = 0.05;
-        this.index = 0;
+        this.index = 8;
         this.changeState(animation_data[7].frames, sheet_data[7]);
         if(this.onScreen == true) {
             score += 50;
