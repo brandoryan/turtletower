@@ -1,5 +1,8 @@
 let shells = 0;
 let score = 0;
+var y1 = 0;
+var y2;
+var scrollSpeed = 2;
 
 var GRAVITY = 2;
 var platforms = [];
@@ -39,47 +42,13 @@ function getAnimationVector(frames, sheet) {
     return sprite_animation;
 }
 
-/*
-var bgImg;
-var y1 = 0;
-var y2;
-
-var scrollSpeed = 2;
-
-function preload(){
-	bgImg = loadImage("bg.png");
-}
-
-function setup() { 
-  createCanvas(400, 400);
-  
-  y2 = height;
-} 
-
-function draw() { 
-  image(bgImg, 0, y1, width, height);
-  image(bgImg, 0, y2, width, height);
-  
-  y1 += scrollSpeed;
-  y2 += scrollSpeed;
-  
-  if (y1 > height){
-    y1 = -height;
-  }
-  if (y2 > height){
-    y2 = -height;
-  }
-  //print(x1, x2)
-  
-}
-*/
-
 function setup() {
     // Loading and Creating Backgrounds
     bg = loadImage('assets/background/background.jpg');
     bg_death = loadImage('assets/background/death_background.jpg');
     shellImage = loadImage('assets/shop/turtle_shell.png');
     createCanvas(500, 700);
+    y2 = height;
 
     // Creating Sprites
     bunny_warrior = new Bunny_Warrior(getAnimationVector(animation_data[0].frames, sheet_data[0]), width / 2 - 30, height - 90, false, 0.25);
@@ -106,44 +75,32 @@ function setup() {
 
 function draw() {
     if(bunny_warrior.dead == false) {
-        background(bg);
+        image(bg, 0, y1, width, height);
+        image(bg, 0, y2, width, height);
     }
-
-    if (checkIfInHitbox(bunny_warrior, turtle_minion) && turtle_minion.onScreen || 
-        checkIfInHitbox(bunny_warrior, turtle_gatekeeper) && turtle_gatekeeper.onScreen || 
-        checkIfInHitbox(bunny_warrior, turtle_king) && turtle_king.onScreen) {
-        endGame();
-    }
-    if(bunny_warrior.y > height) {
-        endGame();
-    }
-
-    handleEnemies();
-    handleBunny();
-    handleSnowball();
-    handleScore();
-
-    handlePlatforms();
-    //var collided = false;
-
-    for(var i = 0; i < platforms.length; i++) {
-        
-        platforms[i].draw();
-        
-        if(platforms[i].collidesWith(bunny_warrior)) {// && !collided) {
-            //bunny_warrior.applyForce(0, -100);
-            //collided = true;
-            velocity *= 0.8;
-            //bunny_warrior.force*velocity;
-            //bunny_warrior.jump();
-
-            bunny_warrior.onPlatform = true;
-        }
+    else {
+        tint(100,255);
+        image(bg, 0, y1, width, height);
+        image(bg, 0, y2, width, height);
+        tint(255,255);
     }
     
-    if(bunny_warrior.onPlatform == true) {
-        bunny_warrior.applyForce(0, -GRAVITY);
+    if (y1 >= height){
+      y1 = -height;
     }
+    if (y2 >= height){
+      y2 = -height;
+    }
+    
+    handlePlatforms();
+    handleBunny();
+    handleEnemies();
+    handleSnowball();
+    handleScore();
+    
+    //var collided = false;
+
+
     
     bunny_warrior.onPlatform = false;
 
@@ -151,12 +108,13 @@ function draw() {
 }
 
 function endGame() {
-    background(bg_death);
     textAlign(CENTER);
     textSize(60);
-    noStroke();
+    strokeWeight(3);
     fill("70FFF0");
     text("Game Over!", width / 2, height / 2);
+    textSize(18);
+    text("Don't give up, Refresh to try again!", width / 2, height / 2 + 30);
     bunny_warrior.death();
 }
 
@@ -182,6 +140,19 @@ function handleEnemies() {
 }
 
 function handleBunny() {
+    if(bunny_warrior.onPlatform == true) {
+        bunny_warrior.applyForce(0, -GRAVITY);
+    }
+    
+    if (checkIfInHitbox(bunny_warrior, turtle_minion) && turtle_minion.onScreen || 
+        checkIfInHitbox(bunny_warrior, turtle_gatekeeper) && turtle_gatekeeper.onScreen || 
+        checkIfInHitbox(bunny_warrior, turtle_king) && turtle_king.onScreen) {
+        endGame();
+    }
+    if(bunny_warrior.y > height) {
+        endGame();
+    }
+
     bunny_warrior.show();
     bunny_warrior.animate();
 
@@ -250,7 +221,20 @@ function handleScore() {
 }
 
 function handlePlatforms() {
+    for(var i = 0; i < platforms.length; i++) {
+        
+        platforms[i].draw();
+        
+        if(platforms[i].collidesWith(bunny_warrior)) {// && !collided) {
+            //bunny_warrior.applyForce(0, -100);
+            //collided = true;
+            velocity *= 0.8;
+            //bunny_warrior.force*velocity;
+            //bunny_warrior.jump();
 
+            bunny_warrior.onPlatform = true;
+        }
+    }
 }
 
 function handleKeys() {
@@ -275,6 +259,8 @@ function handleKeys() {
         }
         // Jump
         if(keyIsDown(32)) {
+            y1 += scrollSpeed;
+            y2 += scrollSpeed;
             //if(bunny_warrior.onPlatform == true) {
             bunny_warrior.applyForce(0, -10);
             //}
