@@ -323,7 +323,7 @@ function handlePlatforms() {
         
         platforms[i].draw();
 
-        if(platforms[i].collidesWith(bunny_warrior)) {
+        if(platforms[i].collidesWith(bunny_warrior) && floor(bunny_warrior.force) == 0) {
             bunny_warrior.force = jump_force;
             platforms[i].y += 5;
 
