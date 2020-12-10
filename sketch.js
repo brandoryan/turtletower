@@ -1,4 +1,4 @@
-let shells = 0;
+let shells = 19;
 let score = 0;
 let level = 0;
 var y1 = 0;
@@ -13,6 +13,7 @@ let sheet_data = [];
 let snowball = [];
 let snowball_ammo = 1;
 let snowball_mod = 10;
+let max_ammo = 6;
 let velocity = 0;
 
 function preload() {
@@ -310,8 +311,20 @@ function handleScore() {
     text("Level: " + level, 10, 25);
 
     let offset_x = 6;
+    let num_disp = floor(shells / snowball_mod);
+
     // Snowball ammo display
-    for(var i = 0; i < floor(shells / snowball_mod) + 1; i++) {
+    if(num_disp >= max_ammo) {
+        num_disp = max_ammo;
+    }
+    else if(shells < snowball_mod) {
+        num_disp = 1;
+    }
+    else {
+        num_disp = floor(shells / snowball_mod) + 1;
+    }
+
+    for(var i = 0; i < num_disp; i++) {
         image(snowballImage, offset_x, height- 90, 20,40);
         offset_x+= 18;
     }
@@ -352,9 +365,20 @@ function mouseClicked() {
     // Gain the ability to fire more snowballs based on how many
     // shells youve collected. Every 10 shells you gain 1 more
     // snowball ammo.
+
+    snowball_ammo = floor(shells / snowball_mod);
     if(bunny_warrior.dead == false) {
-        snowball_ammo = shells / snowball_mod;
-        if(snowball.length < floor(snowball_ammo) + 1) {
+        if(snowball_ammo >= max_ammo) {
+            snowball_ammo = max_ammo;
+        }
+        else if(shells < snowball_mod) {
+            snowball_ammo = 1;
+        }
+        else {
+            snowball_ammo = floor(shells / snowball_mod) + 1;
+        }
+        
+        if(snowball.length < snowball_ammo) {
             snowball.push(new Snowball(getAnimationVector(animation_data[12].frames, sheet_data[12]), bunny_warrior.x+10, bunny_warrior.y+20, true, 0.6));
             snowball[snowball.length-1].thrown = true;
             snowball[snowball.length-1].target = createVector(mouseX, mouseY);
