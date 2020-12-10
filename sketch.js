@@ -51,6 +51,9 @@ function setup() {
     snowballImage = loadImage('assets/sprites/snowball/snowball_ammo.png');
     createCanvas(500, 700);
     y2 = height;
+    button = createButton('Controls');
+    button.position(15, 40);
+    button.mousePressed(displayHelpWindow);
 
     for(var y = 0; y < height-60; y += 40) {
         for(var i = 0; i < 5; i++) {
@@ -108,6 +111,13 @@ function endGame() {
     textSize(18);
     text("Don't give up, Refresh to try again!", width / 2, height / 2 + 30);
     bunny_warrior.death();
+}
+
+function displayHelpWindow() {
+    alert('Group Dream Team: Brandon Ryan\n'+
+          'Controls: A S D or Left Down Right arrow, click to throw snowball\n'+
+          'Gain a new snowball to throw for every 10 shells you collect\n'+
+          'Go on Bunny Warrior, you are our last hope.\n');
 }
 
 function generateNewLevel() {
@@ -323,22 +333,15 @@ function handlePlatforms() {
 function handleKeys() {
     if(bunny_warrior.dead == false) {
         // Left
-        if(keyIsDown(65)) {
+        if(keyIsDown(65) || keyIsDown(LEFT_ARROW)) {
             bunny_warrior.applyForce(-5, 0); 
         }
         // Right
-        else if(keyIsDown(68)) { 
+        else if(keyIsDown(68) || keyIsDown(RIGHT_ARROW)) { 
             bunny_warrior.applyForce(5, 0);
         }
-        else if(keyIsDown(83)) { 
+        else if(keyIsDown(83) || keyIsDown(DOWN_ARROW)) { 
             bunny_warrior.applyForce(0, 5);
-        }
-        else if(keyIsDown(LEFT_ARROW)) {
-            bunny_warrior.applyForce(-5, 0); 
-        }
-        // Right
-        else if(keyIsDown(RIGHT_ARROW)) { 
-            bunny_warrior.applyForce(5, 0);
         }
     }
 }
