@@ -3,6 +3,8 @@ let score = 0;
 let level = 0;
 var y1 = 0;
 var y2;
+var jump_force = 12;
+var accel = 0.92;
 var scrollSpeed = 2;
 var GRAVITY = 2;
 var platforms = [];
@@ -114,7 +116,7 @@ function endGame() {
 }
 
 function displayHelpWindow() {
-    alert('Group Dream Team: Brandon Ryan\n'+
+    alert('Dream Team: Brandon Ryan\n'+
           'Controls: A S D or Left Down Right arrow, click to throw snowball\n'+
           'Gain a new snowball to throw for every 10 shells you collect\n'+
           'Go on Bunny Warrior, you are our last hope.\n');
@@ -218,7 +220,7 @@ function handleBunny() {
 
     if(bunny_warrior.dead == false) {
         bunny_warrior.applyForce(0, -bunny_warrior.force);
-        bunny_warrior.force *= 0.9;
+        bunny_warrior.force *= accel;
     }
 
     // If player has touched an enemy
@@ -322,7 +324,7 @@ function handlePlatforms() {
         platforms[i].draw();
 
         if(platforms[i].collidesWith(bunny_warrior)) {
-            bunny_warrior.force = 15;
+            bunny_warrior.force = jump_force;
             platforms[i].y += 5;
 
             bunny_warrior.onPlatform = true;
