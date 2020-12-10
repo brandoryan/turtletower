@@ -119,6 +119,14 @@ function handleBackground() {
     if (y2 >= height){
       y2 = -height;
     }
+    /*
+    if (y1 < -height){
+      y1 = height;
+    }
+    if (y2 < -height){
+      y2 = height;
+    }
+    */
 }
 
 function handleEnemies() {
@@ -273,6 +281,9 @@ function handleKeys() {
         if(keyIsDown(32)) {
             y1 += scrollSpeed;
             y2 += scrollSpeed;
+
+            //y1 -= scrollSpeed;
+            //y2 -= scrollSpeed;
             //if(bunny_warrior.onPlatform == true) {
             bunny_warrior.applyForce(0, -10);
             //}
