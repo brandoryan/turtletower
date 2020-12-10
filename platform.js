@@ -14,6 +14,7 @@ Platform.prototype.draw = function(altitude) {
     strokeWeight(2);
     fill(this.color);
     rect(this.x, this.y, this.width, 15);
+    
     /*if(altitude - this.altitude < height / 2) {
         rect(this.x, (altitude - this.altitude + height / 2), this.size, 15);
     }
