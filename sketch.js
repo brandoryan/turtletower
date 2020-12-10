@@ -1,4 +1,4 @@
-let shells = 19;
+let shells = 0;
 let score = 0;
 let level = 0;
 var y1 = 0;
