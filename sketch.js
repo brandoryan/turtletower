@@ -76,7 +76,6 @@ function setup() {
 }
 
 function draw() {
-
     if(bunny_warrior.y < bunny_warrior.maxAltitude) {
         y1 += scrollSpeed;
         y2 += scrollSpeed;
@@ -141,12 +140,13 @@ function generateNewLevel() {
     }
 
     // Creating Sprites
-    var ran_x = rand_between(0, width-100);
-    var ran_y = rand_between(0, height-300);
+    //var ran_mini = rand_between(3,4);
+    //var ran_gate = rand_between(6,7);
+    //var ran_king = rand_between(9,10);
     bunny_warrior.move(width / 2 - 30, height - 90);
-    turtle_minion = new Turtle_Minion(getAnimationVector(animation_data[3].frames, sheet_data[3]), ran_x, ran_y, true, 0.1);
-    turtle_gatekeeper = new Turtle_Gatekeeper(getAnimationVector(animation_data[6].frames, sheet_data[6]), ran_x, ran_y, true, 0.1);
-    turtle_king = new Turtle_King(getAnimationVector(animation_data[9].frames, sheet_data[9]), ran_x, ran_y, true, 0.1);
+    turtle_minion = new Turtle_Minion(getAnimationVector(animation_data[3].frames, sheet_data[3]), rand_between(0, width-100), rand_between(0, height-300), true, 0.1);
+    turtle_gatekeeper = new Turtle_Gatekeeper(getAnimationVector(animation_data[6].frames, sheet_data[6]), rand_between(0, width-100), rand_between(0, height-300), true, 0.1);
+    turtle_king = new Turtle_King(getAnimationVector(animation_data[9].frames, sheet_data[9]), rand_between(0, width-100), rand_between(0, height-300), true, 0.1);
 
     // Generate enemy platforms
     platforms.push(new Platform(bunny_warrior.x-50, bunny_warrior.y + 80, 160, color("#f0ead6")));
@@ -155,12 +155,8 @@ function generateNewLevel() {
     platforms.push(new Platform(turtle_king.x, turtle_king.y + turtle_king.h, 65, color("#90ee90")));
 }
 
-function getRandomInt(max) {
-    return Math.floor(Math.random() * Math.floor(max));
-}
-
 function rand_between(min,max) {
-    return Math.floor(Math.random() * max) + min;
+    return Math.floor(Math.random() * (max - min + 1) + min);
 } 
 
 function handleBackground() {
