@@ -354,9 +354,6 @@ function handleKeys() {
         else if(keyIsDown(68) || keyIsDown(RIGHT_ARROW)) { 
             bunny_warrior.applyForce(5, 0);
         }
-        else if(keyIsDown(83) || keyIsDown(DOWN_ARROW)) { 
-            bunny_warrior.applyForce(0, 5);
-        }
     }
 }
 
