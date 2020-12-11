@@ -58,7 +58,7 @@ function setup() {
     button.position(15, 40);
     button.mousePressed(displayHelpWindow);
 
-    for(var y = 0; y < height-60; y += 40) {
+    for(var y = 0; y < height-50; y += 40) {
         for(var i = 0; i < 5; i++) {
             var x = noise(i, y) * width;
             if(noise(y, i) > 0.5) {
@@ -338,8 +338,7 @@ function handlePlatforms() {
 
         if(platforms[i].collidesWith(bunny_warrior) && floor(bunny_warrior.force) == 0) {
             bunny_warrior.force = jump_force;
-            platforms[i].y += 5;
-
+            platforms.splice(i, 1);
             bunny_warrior.onPlatform = true;
         }
     }
