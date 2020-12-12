@@ -125,7 +125,7 @@ function displayHelpWindow() {
 
 function generateNewLevel() {
     level++;
-    score += level * 5;
+    score += level * 10;
     bunny_warrior.maxAltitude = height;
 
     // Deleting previous platforms
